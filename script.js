@@ -1,7 +1,7 @@
 
 console.log("Running Sal's Strawberries")
 
-function writeForm(){
+function fb_write(){
     // Get the form data
     const name = document.getElementById("name").value;
     const favoriteFruit = document.getElementById("favoriteFruit").value;
