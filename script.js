@@ -21,6 +21,7 @@ function fb_login() {
 //Checks if user is logged in, if not fb_popupLogin
 function fb_handleLogin(_user) {
   if (_user) {
+    console.log("User is logged in")
     GLOBAL_user = _user; //Save user details into global variable
     console.log(GLOBAL_user);
     let uid = _user.uid;
@@ -33,6 +34,7 @@ function fb_handleLogin(_user) {
     });
     console.log("New user created");
   } else {
+    console.log("User not logged in - starting popup")
     fb_popupLogin();
   }
 }
@@ -42,10 +44,12 @@ function fb_popupLogin() {
   firebase.auth().signInWithPopup(provider).then((result) => {
     GLOBAL_user = result.user;
     console.log(GLOBAL_user);
+    console.log("User is logged in")
   });
 }
 //Simple logout
 function fb_logout() {
   authenticationListener();
   firebase.auth().signOut();
+  console.log("Logged out")
 }
