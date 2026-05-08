@@ -6,6 +6,7 @@ function fb_write(){
     const name = document.getElementById("name").value;
     const favoriteFruit = document.getElementById("favoriteFruit").value;
     const fruitQuantity = document.getElementById("fruitQuantity").value;
+    console.log("collect data");
 
     //Set users data with form data
     let uid = GLOBAL_user.uid;
@@ -16,6 +17,7 @@ function fb_write(){
             fruitQuantity: fruitQuantity
         }
     );
+    console.log("Set data");
 
 }
 
