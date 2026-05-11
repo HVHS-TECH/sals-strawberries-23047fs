@@ -21,7 +21,7 @@ function fb_write() {
         //Set users data with form data
         //Get user
         let uid = GLOBAL_user.uid;
-        firebase.database().ref('/sals/users/'+uid).set( 
+        firebase.database().ref('/sals/users/' + uid).set(
             {
                 name: name,
                 favoriteFruit: favoriteFruit,
@@ -54,10 +54,10 @@ function fb_readFruit() {
 /**************************************************************/
 //Gets data and orders it
 function fb_displayFruit(snapshot) {
-  snapshot.forEach(fb_show); 
+    snapshot.forEach(fb_show);
 }
 //Displays them
 function fb_show(child) {
-  console.log(child.val()["name"] + " " + child.val()["favoriteFruit"]);
-  HTML_OUTPUT.innerHTML += child.val()["name"] + " " + child.val()["favoriteFruit"] + "<br>"
+    console.log(child.val()["name"] + " " + child.val()["favoriteFruit"]);
+    HTML_OUTPUT.innerHTML += child.val()["name"] + " " + child.val()["favoriteFruit"] + "<br>"
 }
