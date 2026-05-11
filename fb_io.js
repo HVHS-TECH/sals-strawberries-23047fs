@@ -16,16 +16,16 @@ let GLOBAL_user;
 
 //Create listener
 function fb_login() {
-  authenticationListener = firebase.auth().onAuthStateChanged(fb_handleLogin)
+  authenticationListener = firebase.auth().onAuthStateChanged(fb_handleLogin, fb_error)
 }
-//Checks if user is logged in, if not fb_popupLogin
-async function fb_handleLogin(_user) {
+//Checks if user is logged in, if not use fb_popupLogin
+function fb_handleLogin(_user) {
   if (_user) {
     console.log("User is logged in")
     GLOBAL_user = _user; //Save user details into global variable
     } else {
     console.log("User not logged in - starting popup")
-    await fb_popupLogin();
+    fb_popupLogin();
     console.log("User is logged in");
   }
 }
@@ -35,7 +35,7 @@ function fb_popupLogin() {
   firebase.auth().signInWithPopup(provider).then((result) => {
     GLOBAL_user = result.user;
     let uid = result.user.uid;
-    //Create new user in database
+    //Create new user in database using uid
     firebase.database().ref('/sals/users/'+uid).set(
     {
         name: '',
@@ -54,10 +54,10 @@ function fb_logout() {
 
 /**************************************************************/
 // Error handling
-// Handles logging in and out
-// This function creates a listener to check if users are logged into google; if not creates a popup
+// Handles errors
+// This function is active if an error happens, it console logs the error
 /**************************************************************/
-
-function fb_error(){
-    // Don't forget your error handling!
+function fb_error(error){
+  console.error("An error has happened");
+  console.error(error);
 }
