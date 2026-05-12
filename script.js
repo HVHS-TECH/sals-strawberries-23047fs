@@ -72,7 +72,7 @@ function fb_displayFruit(child) {
 
     for (let i = 0; i < options.length; i++) {
         if (child.val()["favoriteFruit"] == theFruitText[i]) {
-            theFruitValue.push(theFruitValue[i] + 1);
+            theFruitValue.push(Number(theFruitValue[i]) + 1);
         }
     }
     //Display the fruit with the amount
