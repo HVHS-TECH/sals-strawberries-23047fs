@@ -39,7 +39,7 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 /**************************************************************/
 // fb_readFruit()
 // Handles reading fruit from database
-// This function reads the favorite fruits of users, and then activates fb_snapshot
+// This function reads the favorite fruits of users in a snapshot, and then activates fb_snapshot
 /**************************************************************/
 function fb_readFruit() {
     console.log("Reading fruit");
@@ -59,6 +59,28 @@ function fb_snapshot(snapshot) {
 
 //Displays them
 function fb_displayFruit(child) {
+    //Get the options from the dropdown
+    const selectElement = document.getElementById("favoriteFruit");
+    const options = selectElement.options;
+    let theFruitText = [];
+    let theFruitValue = [];
+
+    for (let i = 0; i < options.length; i++) {
+        theFruitText.push(options[i].value);
+        theFruitValue.push(i-i);
+    }
+
+    for (let i = 0; i < options.length; i++) {
+        if (child.val()["favoriteFruit"] == theFruitText[i]) {
+            theFruitValue.push(theFruitValue[i] + 1);
+        }
+    }
+    //Display the fruit with the amount
+    for (let i = 0; i < options.length; i++) {
+        console.log(theFruitText[i] + ": " + theFruitValue[i]);
+    }
+
+/*
     //Create var of fruits
     //Strawberry
     let numStr = 0;
@@ -83,4 +105,6 @@ function fb_displayFruit(child) {
         "Mango: " + numMan + "<br>" +
         "Plum: " + numPlu + "<br>" +
         "Dragonfruit: " + numDra + "<br>";
+*/
+
 }
