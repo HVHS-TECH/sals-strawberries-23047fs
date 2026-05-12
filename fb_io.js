@@ -39,7 +39,7 @@ function fb_popupLogin() {
     firebase.database().ref('/sals/users/' + uid).set(
       {
         name: '',
-        favouriteFruit: '',
+        favoriteFruit: '',
         fruitQuantity: 0
       });
     console.log("New user created");
@@ -47,9 +47,14 @@ function fb_popupLogin() {
 }
 //Simple logout
 function fb_logout() {
-  authenticationListener();
-  firebase.auth().signOut();
-  console.log("Logged out")
+  if (GLOBAL_user == null) {
+    alert("Please login first");
+    console.log("User has failed to login first");
+  } else {
+    authenticationListener();
+    firebase.auth().signOut();
+    console.log("Logged out")
+  };
 }
 
 /**************************************************************/

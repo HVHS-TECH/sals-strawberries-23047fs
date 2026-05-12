@@ -39,25 +39,48 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 /**************************************************************/
 // fb_readFruit()
 // Handles reading fruit from database
-// This function reads the favorite fruits of users, and then activates fb_displayFruit
+// This function reads the favorite fruits of users, and then activates fb_snapshot
 /**************************************************************/
 function fb_readFruit() {
     console.log("Reading fruit");
-    firebase.database().ref('/sals/users').orderByChild("favoriteFruit").once('value', fb_displayFruit, fb_error);
+    firebase.database().ref('/sals/users').once('value', fb_snapshot, fb_error);
     console.log("Finished reading fruit");
 }
 
 /**************************************************************/
-// displayFruit()
+// fb_snapshot() and fb_displayFruit
 // Handles diplaying fruit from snapshot to html
-// This function uses the data from fb_readFruit into html
+// This function uses the data from fb_readFruit and puts it into html using fb_displayFruit
 /**************************************************************/
 //Gets data and orders it
-function fb_displayFruit(snapshot) {
-    snapshot.forEach(fb_show);
+function fb_snapshot(snapshot) {
+    snapshot.forEach(fb_displayFruit);
 }
+
 //Displays them
-function fb_show(child) {
-    console.log(child.val()["name"] + " " + child.val()["favoriteFruit"]);
-    HTML_OUTPUT.innerHTML += child.val()["name"] + " " + child.val()["favoriteFruit"] + "<br>"
+function fb_displayFruit(child) {
+    //Create var of fruits
+    //Strawberry
+    let numStr = 0;
+    //Mango
+    let numMan = 0;
+    //Plum
+    let numPlu = 0;
+    //Dragonfruit
+    let numDra = 0;
+    //Check how many of each
+    if (child.val()["favoriteFruit"] == "Strawberry") {
+        numStr = numStr + 1;
+    } else if (child.val()["favoriteFruit"] == "Mango") {
+        numMan = numMan + 1;
+    } else if (child.val()["favoriteFruit"] == "Plum") {
+        numPlu = numPlu + 1;
+    } else {
+        numDra = numDra + 1;
+    }
+    //Display if in HTML
+    HTML_OUTPUT.innerHTML = "Strawberry: " + numStr + "<br>" +
+        "Mango: " + numMan + "<br>" +
+        "Plum: " + numPlu + "<br>" +
+        "Dragonfruit: " + numDra + "<br>";
 }
