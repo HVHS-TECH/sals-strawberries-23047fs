@@ -80,8 +80,7 @@ function fb_displayFruit(child) {
         console.log(theFruitText[i] + ": " + theFruitValue[i]);
     }
 
-    //Works but is a set amount
-/*
+/*      Works but is a set amount
     //Create var of fruits
     //Strawberry
     let numStr = 0;
