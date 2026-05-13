@@ -20,7 +20,7 @@ function fb_write() {
 
         //Set users data with form data
         //Get user
-        let uid = GLOBAL_user.uid;
+        let uid = GLOBAL_user["uid"];
         firebase.database().ref('/Mini Project/users/' + uid).set(
             {
                 name: name,
@@ -40,7 +40,7 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 /**************************************************************/
 // fb_readFruit()
 // Handles reading of the fruit in the database
-// This function reads the favorite fruits of users in a snapshot, and then activates fb_snapshot
+// This function reads the favorite fruits of users in a snapshot, and then activates fb_snapshot to write favorite fruits
 /**************************************************************/
 async function fb_readFruit() {
     console.log("Reading fruit");
@@ -55,7 +55,7 @@ async function fb_readFruit() {
 // Handles diplaying fruit from snapshot to html
 // This function uses the data from fb_readFruit and puts it into html using fb_displayFruit
 /**************************************************************/
-//Gets data and orders it
+//Gets data and activates fb_displayFruit
 async function fb_snapshot(snapshot) {
     await snapshot.forEach(fb_displayFruit);
     console.log("Finished fb_snapshot()");
@@ -92,6 +92,45 @@ function fb_displayFruit(child) {
     console.log("HTML favorite fruit set");
     console.log("Finished fb_displayFruit()");
 }
+
+/**************************************************************/
+// fb_readEmailFruit()
+// Handles reading of the fruit in the database
+// This function reads the favorite fruits of users in a snapshot, and then activates fb_emailSnapshot to send an email
+/**************************************************************/
+
+async function fb_readEmailFruit() {
+    //Checks if logged in
+    if (GLOBAL_user == null) {
+        alert("Please login first");
+        console.log("User has failed to login first")
+    } else {
+        console.log("Reading fruit");
+        console.log("Remove previously displayed data");
+        HTML_OUTPUT.innerHTML = "";
+        await firebase.database().ref('/Mini Project/users').once('value', fb_emailSnapshot, fb_error);
+        console.log("Finished fb_readEmailFruit()");
+    }
+}
+
+/**************************************************************/
+// fb_emailSnapshot() and fb_email()
+// Handles diplaying an email with values from database from snapshot in to html
+// This function uses the data from fb_readEmailFruit and puts it into html using fb_email()
+/**************************************************************/
+//Gets data and activates fb_email
+async function fb_emailSnapshot(snapshot) {
+    await snapshot.forEach(fb_email);
+    console.log("Finished fb_emailSnapshot()");
+}
+//Uses the data and creates an email
+function fb_email(child) {
+    let userName = child.val()["name"];
+    let favoriteFruit = child.val()["favoriteFruit"];
+    let fruitQuantity = child.val()["fruitQuantity"]
+    HTML_OUTPUT.innerHTML = '<div id="emailMessage"> <p>From: Sals Strawberry Saloon</p> <p>Hello, ' + userName + '</p><p>This is Sals Strawberry Saloon, reaching out about your cars extended insurance policy.</p><p>Also, we are offering a deal on your favorite fruit: ' + favoriteFruit + '</p><p>You can get ' + fruitQuantity + ' servings per week for 27.3% more!</p><p>Best regards, Sals Strawberry Saloon</p></div>'
+}
+
 /*      Works but is a set amount
     //Create var of fruits
     //Strawberry
