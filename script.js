@@ -128,9 +128,9 @@ function fb_email(child) {
     let userName = child.val()["name"];
     let favoriteFruit = child.val()["favoriteFruit"];
     let fruitQuantity = child.val()["fruitQuantity"]
-    HTML_OUTPUT.innerHTML = '<div id="emailMessage"> <p>From: Sals Strawberry Saloon</p> <p>Hello, ' + userName + '</p>' + 
-    '<p>This is Sals Strawberry Saloon, reaching out about your cars extended insurance policy.</p><p>Also, we are offering a deal on your favorite fruit: ' 
-     + favoriteFruit + '</p><p>You can get ' + fruitQuantity + ' servings per week for 27.3% more!</p><p>Best regards, Sals Strawberry Saloon</p></div>'
+    HTML_OUTPUT.innerHTML = '<div id="emailMessage"> <p>From: Sals Strawberry Saloon</p> <p>Hello, ' + userName + '</p>' +
+        '<p>This is Sals Strawberry Saloon, reaching out about your cars extended insurance policy.</p><p>Also, we are offering a deal on your favorite fruit: '
+        + favoriteFruit + '</p><p>You can get ' + fruitQuantity + ' servings per week for 27.3% more!</p><p>Best regards, Sals Strawberry Saloon</p></div>'
 }
 
 /*      Works but is a set amount
