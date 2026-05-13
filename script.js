@@ -16,7 +16,7 @@ function fb_write() {
         const name = document.getElementById("name").value;
         const favoriteFruit = document.getElementById("favoriteFruit").value;
         const fruitQuantity = document.getElementById("fruitQuantity").value;
-        console.log("Collect data");
+        console.log("Data collect");
 
         //Set users data with form data
         //Get user
@@ -28,8 +28,9 @@ function fb_write() {
                 fruitQuantity: fruitQuantity
             }
         );
-        console.log("Set data");
+        console.log("Data set");
     };
+    console.log("Finished fb_write()");
 }
 
 //Easy constant that is the output
@@ -38,13 +39,15 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 
 /**************************************************************/
 // fb_readFruit()
-// Handles reading fruit from database
+// Handles reading of the fruit in the database
 // This function reads the favorite fruits of users in a snapshot, and then activates fb_snapshot
 /**************************************************************/
-function fb_readFruit() {
+async function fb_readFruit() {
     console.log("Reading fruit");
-    firebase.database().ref('/Mini Project/users').once('value', fb_snapshot, fb_error);
-    console.log("Finished reading fruit");
+    console.log("Remove previously displayed data");
+    HTML_OUTPUT.innerHTML = "";
+    await firebase.database().ref('/Mini Project/users').once('value', fb_snapshot, fb_error);
+    console.log("Finished fb_readFruit()");
 }
 
 /**************************************************************/
@@ -53,8 +56,9 @@ function fb_readFruit() {
 // This function uses the data from fb_readFruit and puts it into html using fb_displayFruit
 /**************************************************************/
 //Gets data and orders it
-function fb_snapshot(snapshot) {
-    snapshot.forEach(fb_displayFruit);
+async function fb_snapshot(snapshot) {
+    await snapshot.forEach(fb_displayFruit);
+    console.log("Finished fb_snapshot()");
 }
 
 //Displays them 
@@ -63,11 +67,12 @@ function fb_displayFruit(child) {
     //Get the options from the dropdown
     const selectElement = document.getElementById("favoriteFruit");
     const options = selectElement.options;
-    //Create the array to story the data
+    //Create the arrays to story the data
     //Fruit names
     let theFruitText = [];
     //Amount of times it is said in the database
     let theFruitValue = [];
+
     //Get the amount of data and the fruit names
     for (let i = 0; i < options.length; i++) {
         theFruitText.push(options[i].value);
@@ -75,16 +80,18 @@ function fb_displayFruit(child) {
     }
     //Add the number of times it is said
     for (let i = 0; i < options.length; i++) {
+        //Adds 1 when the child favoriteFruit equals each fruit in for loop
         if (child.val()["favoriteFruit"] == theFruitText[i]) {
             theFruitValue[i] = theFruitValue[i] + 1;
         }
     }
     //Display the fruit with the amount
     for (let i = 0; i < options.length; i++) {
-        console.log(theFruitText[i] + ": " + theFruitValue[i]);
         HTML_OUTPUT.innerHTML += theFruitText[i] + ": " + theFruitValue[i] + "<br>";
     }
-
+    console.log("HTML favorite fruit set");
+    console.log("Finished fb_displayFruit()");
+}
 /*      Works but is a set amount
     //Create var of fruits
     //Strawberry
@@ -111,5 +118,3 @@ function fb_displayFruit(child) {
         "Plum: " + numPlu + "<br>" +
         "Dragonfruit: " + numDra + "<br>";
 */
-
-}
