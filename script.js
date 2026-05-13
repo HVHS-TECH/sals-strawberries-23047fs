@@ -21,7 +21,7 @@ function fb_write() {
         //Set users data with form data
         //Get user
         let uid = GLOBAL_user.uid;
-        firebase.database().ref('/sals/users/' + uid).set(
+        firebase.database().ref('/Mini Project/users/' + uid).set(
             {
                 name: name,
                 favoriteFruit: favoriteFruit,
@@ -43,7 +43,7 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 /**************************************************************/
 function fb_readFruit() {
     console.log("Reading fruit");
-    firebase.database().ref('/sals/users').once('value', fb_snapshot, fb_error);
+    firebase.database().ref('/Mini Project/users').once('value', fb_snapshot, fb_error);
     console.log("Finished reading fruit");
 }
 
@@ -57,27 +57,32 @@ function fb_snapshot(snapshot) {
     snapshot.forEach(fb_displayFruit);
 }
 
-//Displays them
+//Displays them 
 function fb_displayFruit(child) {
+    //This can display any amount of fruit that is added to the dropdowm
     //Get the options from the dropdown
     const selectElement = document.getElementById("favoriteFruit");
     const options = selectElement.options;
+    //Create the array to story the data
+    //Fruit names
     let theFruitText = [];
+    //Amount of times it is said in the database
     let theFruitValue = [];
-
+    //Get the amount of data and the fruit names
     for (let i = 0; i < options.length; i++) {
         theFruitText.push(options[i].value);
-        theFruitValue.push(i-i);
+        theFruitValue.push(0);
     }
-
+    //Add the number of times it is said
     for (let i = 0; i < options.length; i++) {
         if (child.val()["favoriteFruit"] == theFruitText[i]) {
-            theFruitValue.push(Number(theFruitValue[i]) + 1);
+            theFruitValue[i] = theFruitValue[i] + 1;
         }
     }
     //Display the fruit with the amount
     for (let i = 0; i < options.length; i++) {
         console.log(theFruitText[i] + ": " + theFruitValue[i]);
+        HTML_OUTPUT.innerHTML += theFruitText[i] + ": " + theFruitValue[i] + "<br>";
     }
 
 /*      Works but is a set amount
