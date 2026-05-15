@@ -168,7 +168,7 @@ function fb_reviewStore() {
             profilePicture: GLOBAL_user["photoURL"]
         });
     //Add review to global review database
-    firebase.database().ref('/Mini Project/Global Reviews/' + uid).set({reviewText});
+    firebase.database().ref('/Mini Project/Global Reviews/' + uid).set({1: reviewText});
     console.log("Data set");
    //Reset review
     document.getElementById("reviewText").value = "";
