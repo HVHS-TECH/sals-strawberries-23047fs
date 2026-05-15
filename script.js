@@ -16,7 +16,7 @@ function fb_write() {
         const name = document.getElementById("name").value;
         const favoriteFruit = document.getElementById("favoriteFruit").value;
         const fruitQuantity = document.getElementById("fruitQuantity").value;
-        console.log("Data collect");
+        console.log("Data collected");
 
         //Set users data with form data
         //Get user
@@ -25,7 +25,8 @@ function fb_write() {
             {
                 name: name,
                 favoriteFruit: favoriteFruit,
-                fruitQuantity: fruitQuantity
+                fruitQuantity: fruitQuantity,
+                review: ""
             }
         );
         console.log("Data set");
@@ -33,9 +34,8 @@ function fb_write() {
     console.log("Finished fb_write()");
 }
 
-//Easy constant that is the output
+//HTML database output constant
 const HTML_OUTPUT = document.getElementById("databaseOutput");
-
 
 /**************************************************************/
 // fb_readFruit()
@@ -98,8 +98,7 @@ function fb_displayFruit(child) {
 // Handles reading of the fruit in the database
 // This function reads the favorite fruits of users in a snapshot, and then activates fb_emailSnapshot to send an email
 /**************************************************************/
-
-async function fb_readEmailFruit() {
+function fb_readEmailFruit() {
     //Checks if logged in
     if (GLOBAL_user == null) {
         alert("Please login first");
@@ -108,11 +107,10 @@ async function fb_readEmailFruit() {
         console.log("Reading fruit");
         console.log("Remove previously displayed data");
         HTML_OUTPUT.innerHTML = "";
-        await firebase.database().ref('/Mini Project/users').once('value', fb_emailSnapshot, fb_error);
+        firebase.database().ref('/Mini Project/users').once('value', fb_emailSnapshot, fb_error);
         console.log("Finished fb_readEmailFruit()");
     }
 }
-
 /**************************************************************/
 // fb_emailSnapshot() and fb_email()
 // Handles diplaying an email with values from database from snapshot in to html
@@ -133,29 +131,58 @@ function fb_email(child) {
         + favoriteFruit + '</p><p>You can get ' + fruitQuantity + ' servings per week for 27.3% more!</p><p>Best regards, Sals Strawberry Saloon</p></div>'
 }
 
-/*      Works but is a set amount
-    //Create var of fruits
-    //Strawberry
-    let numStr = 0;
-    //Mango
-    let numMan = 0;
-    //Plum
-    let numPlu = 0;
-    //Dragonfruit
-    let numDra = 0;
-    //Check how many of each
-    if (child.val()["favoriteFruit"] == "Strawberry") {
-        numStr = numStr + 1;
-    } else if (child.val()["favoriteFruit"] == "Mango") {
-        numMan = numMan + 1;
-    } else if (child.val()["favoriteFruit"] == "Plum") {
-        numPlu = numPlu + 1;
+/**************************************************************/
+// fb_review
+// Handles creating a reply prompt and storing the data
+// This function creates a prompt then activates fb_reviewStore
+/**************************************************************/
+//HTML review output constant
+const HTML_REVIEW_OUTPUT = document.getElementById("reviewOutput");
+const HTML_REVIEW_LOAD_OUTPUT = document.getElementById("reviewLoadOutput");
+//Create the review textbox then activates fb_reviewStore when button pressed
+function fb_reviewPrompt() {
+    //Check if logged in
+    if (GLOBAL_user == null) {
+        alert("Please login first");
+        console.log("User has failed to login first")
     } else {
-        numDra = numDra + 1;
+        //Reset output
+        HTML_OUTPUT.innerHTML = "";
+        //Create a review place
+        HTML_REVIEW_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
+        + '<input type="text" id="reviewText" name="reviewText" required />'
+        + '<br><button onclick="fb_reviewStore()">Submit</button>';
     }
-    //Display if in HTML
-    HTML_OUTPUT.innerHTML = "Strawberry: " + numStr + "<br>" +
-        "Mango: " + numMan + "<br>" +
-        "Plum: " + numPlu + "<br>" +
-        "Dragonfruit: " + numDra + "<br>";
-*/
+}
+//Store review then load it
+function fb_reviewStore() {
+    const reviewText = document.getElementById("reviewText").value;
+    console.log("Data collected");
+    //Set users data with form data
+    //Get user
+    let uid = GLOBAL_user["uid"];
+    //Set review
+    firebase.database().ref('/Mini Project/users/' + uid + '/review').set(
+        {
+            review: reviewText,
+            profilePicture: GLOBAL_user["photoURL"]
+        });
+    //Add review to global review database
+    firebase.database().ref('/Mini Project/Global Reviews/').set({uid: reviewText});
+    console.log("Data set");
+   //Reset review
+    document.getElementById("reviewText").value = "";
+    fb_getReviews();
+}
+//Get reviews
+function fb_getReviews() {
+    let uid = GLOBAL_user["uid"];
+    firebase.database().ref('/Mini Project/users/' + uid + '/review').once('value', fb_reviewSnapshot, fb_error);
+    console.log("Got the data")
+}
+//Gets data and activates fb_email
+function fb_reviewSnapshot(snapshot) {
+    let data = snapshot.val();
+    HTML_REVIEW_LOAD_OUTPUT.innerHTML += data["profilePicture"] + "<br>" + data["review"]; + "<br>"
+    console.log("Set the review")
+}
