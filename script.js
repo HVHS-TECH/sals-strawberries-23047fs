@@ -152,10 +152,50 @@ function fb_reviewPrompt() {
         HTML_REVIEW_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
         + '<input type="text" id="reviewText" name="reviewText" required />'
         + '<br><button onclick="fb_reviewStore()">Submit</button>';
+        //Displays all other reviews
+        fb_globalDisplayReview();
     }
 }
+//Displays all reviews
+function fb_globalDisplayReview() {
+    firebase.database().ref('/Mini Project/Global Reviews/').once('value', fb_globalReviewSnapshot, fb_error);
+    console.log("Got the global data");
+}
+//Get it and display
+function fb_globalReviewSnapshot(snapshot) {
+    let dbdata = snapshot.val();
+    if (dbdata == null) {
+        return;
+    } else {
+        let number = Object.keys(dbdata);
+        for (i = 0; i < number.length; i++) {
+            HTML_REVIEW_LOAD_OUTPUT.innerHTML += (i+1) + " " + dbdata[(i+1)]; + " " + "<br>";
+        }
+        console.log("Displayed global reviews");
+    };
+}
+
+let reviewLength;
+//Count the length of global reviews
+function fb_countReviews() {
+    firebase.database().ref('/Mini Project/Global Reviews/').once('value', fb_readLength(), fb_error);
+}
+function fb_readLength(snapshot) {
+    let data = snapshot.val();
+    if (dbdata == null) {
+        return;
+    } else {
+        reviewLength = 0;
+        for (let i = 0; i < data.length; i++) {
+            reviewLength = reviewLength + 1;
+        }
+    };
+}
+
+
+//Users submit review
 //Store review then load it
-function fb_reviewStore() {
+async function fb_reviewStore() {
     const reviewText = document.getElementById("reviewText").value;
     console.log("Data collected");
     //Set users data with form data
@@ -167,22 +207,28 @@ function fb_reviewStore() {
             review: reviewText,
             profilePicture: GLOBAL_user["photoURL"]
         });
-    //Add review to global review database
-    firebase.database().ref('/Mini Project/Global Reviews/' + uid).set({1: reviewText});
+
+    await fb_countReviews();
+    //Push review to global review database
+    let dbRef = firebase.database().ref('/Mini Project/Global Reviews/' + reviewLength);
+    dbRef.push({
+        review: reviewText
+    });
+
+
     console.log("Data set");
-   //Reset review
-    document.getElementById("reviewText").value = "";
+    //Display reviews
     fb_getReviews();
 }
 //Get reviews
 function fb_getReviews() {
     let uid = GLOBAL_user["uid"];
     firebase.database().ref('/Mini Project/users/' + uid + '/review').once('value', fb_reviewSnapshot, fb_error);
-    console.log("Got the data")
+    console.log("Got the data");
 }
-//Gets data and activates fb_email
+//Gets data and displays it
 function fb_reviewSnapshot(snapshot) {
     let data = snapshot.val();
-    HTML_REVIEW_LOAD_OUTPUT.innerHTML += data["profilePicture"] + "<br>" + data["review"]; + "<br>"
-    console.log("Set the review")
+    HTML_REVIEW_LOAD_OUTPUT.innerHTML += "<div>" + data["profilePicture"] + "<br>" + data["review"]; + "<br><div>";
+    console.log("Set the review");
 }
