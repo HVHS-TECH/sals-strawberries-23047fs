@@ -174,61 +174,28 @@ function fb_globalReviewSnapshot(snapshot) {
         console.log("Displayed global reviews");
     };
 }
-
 let reviewLength;
 //Count the length of global reviews
-function fb_countReviews() {
-    firebase.database().ref('/Mini Project/Global Reviews/').once('value', fb_readLength(), fb_error);
+async function fb_countReviews() {
+    await firebase.database().ref('/Mini Project/Global Reviews/').once('value', fb_readLength, fb_error);
 }
 function fb_readLength(snapshot) {
     let data = snapshot.val();
-    if (dbdata == null) {
+    if (data == null) {
         return;
     } else {
-        reviewLength = 0;
-        for (let i = 0; i < data.length; i++) {
-            reviewLength = reviewLength + 1;
-        }
+        reviewLength = Object.keys(data).length + 1;
     };
 }
-
-
-//Users submit review
 //Store review then load it
 async function fb_reviewStore() {
     const reviewText = document.getElementById("reviewText").value;
     console.log("Data collected");
     //Set users data with form data
-    //Get user
-    let uid = GLOBAL_user["uid"];
-    //Set review
-    firebase.database().ref('/Mini Project/users/' + uid + '/review').set(
-        {
-            review: reviewText,
-            profilePicture: GLOBAL_user["photoURL"]
-        });
-
     await fb_countReviews();
     //Push review to global review database
-    let dbRef = firebase.database().ref('/Mini Project/Global Reviews/' + reviewLength);
-    dbRef.push({
-        review: reviewText
-    });
-
-
+    firebase.database().ref('/Mini Project/Global Reviews/' + reviewLength).set(reviewText);
     console.log("Data set");
     //Display reviews
-    fb_getReviews();
-}
-//Get reviews
-function fb_getReviews() {
-    let uid = GLOBAL_user["uid"];
-    firebase.database().ref('/Mini Project/users/' + uid + '/review').once('value', fb_reviewSnapshot, fb_error);
-    console.log("Got the data");
-}
-//Gets data and displays it
-function fb_reviewSnapshot(snapshot) {
-    let data = snapshot.val();
-    HTML_REVIEW_LOAD_OUTPUT.innerHTML += "<div>" + data["profilePicture"] + "<br>" + data["review"]; + "<br><div>";
-    console.log("Set the review");
+    fb_globalDisplayReview()
 }
