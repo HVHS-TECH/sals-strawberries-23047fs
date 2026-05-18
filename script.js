@@ -167,9 +167,15 @@ function fb_globalReviewSnapshot(snapshot) {
     if (dbdata == null) {
         return;
     } else {
+        //Reset HTML output
+        HTML_REVIEW_LOAD_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
+        + '<input type="text" id="reviewText" name="reviewText" required />'
+        + '<br><button onclick="fb_reviewStore()">Submit</button>';
+        //Read how many reviews there are
         let number = Object.keys(dbdata);
+        //For each review display it
         for (i = 0; i < number.length; i++) {
-            HTML_REVIEW_LOAD_OUTPUT.innerHTML += (i+1) + " " + dbdata[(i+1)]; + " " + "<br>";
+            HTML_REVIEW_LOAD_OUTPUT.innerHTML += (i+1) + " " + String(dbdata[(i+1)]); + " " + "<br>";
         }
         console.log("Displayed global reviews");
     };
