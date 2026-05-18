@@ -165,7 +165,7 @@ function fb_globalDisplayReview() {
 function fb_globalReviewSnapshot(snapshot) {
     let dbdata = snapshot.val();
     if (dbdata == null) {
-        return;
+        alert("Error with system");
     } else {
         //Reset HTML output
         HTML_REVIEW_LOAD_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
