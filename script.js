@@ -58,20 +58,24 @@ async function fb_readFruit() {
 //Gets data and activates fb_displayFruit
 async function fb_snapshot(snapshot) {
     await snapshot.forEach(fb_displayFruit);
+    //Display the fruit with the amount
+    for (let i = 0; i < options.length; i++) {
+        HTML_OUTPUT.innerHTML += theFruitText[i] + ": " + theFruitValue[i] + "<br>";
+    }
     console.log("Finished fb_snapshot()");
 }
-
+const options = selectElement.options;
+//Create the arrays to story the data
+//Fruit names
+let theFruitText = [];
+//Amount of times it is said in the database
+let theFruitValue = [];
 //Displays them 
 function fb_displayFruit(child) {
     //This can display any amount of fruit that is added to the dropdowm
     //Get the options from the dropdown
     const selectElement = document.getElementById("favoriteFruit");
-    const options = selectElement.options;
-    //Create the arrays to story the data
-    //Fruit names
-    let theFruitText = [];
-    //Amount of times it is said in the database
-    let theFruitValue = [];
+    
 
     //Get the amount of data and the fruit names
     for (let i = 0; i < options.length; i++) {
@@ -84,10 +88,6 @@ function fb_displayFruit(child) {
         if (child.val()["favoriteFruit"] == theFruitText[i]) {
             theFruitValue[i] = theFruitValue[i] + 1;
         }
-    }
-    //Display the fruit with the amount
-    for (let i = 0; i < options.length; i++) {
-        HTML_OUTPUT.innerHTML += theFruitText[i] + ": " + theFruitValue[i] + "<br>";
     }
     console.log("HTML favorite fruit set");
     console.log("Finished fb_displayFruit()");
