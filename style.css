@@ -57,3 +57,8 @@ button:hover {
   margin-top: 1rem;
   font-style: italic;
 }
+
+.img {
+  border-radius: 50%;
+  width: 12%;
+}

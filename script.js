@@ -151,7 +151,7 @@ function fb_reviewPrompt() {
         //Create a review place
         HTML_REVIEW_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
         + '<input type="text" id="reviewText" name="reviewText" required />'
-        + '<br><button onclick="fb_reviewStore()">Submit</button>';
+        + '<button onclick="fb_reviewStore()">Submit</button>';
         //Displays all other reviews
         fb_globalDisplayReview();
     }
@@ -165,11 +165,13 @@ function fb_globalDisplayReview() {
 function fb_globalReviewSnapshot(snapshot) {
     let dbdata = snapshot.val();
     if (dbdata == null) {
-        return;
+        HTML_REVIEW_LOAD_OUTPUT.innerHTML = "There are currently no reviews, be the first";
     } else {
+        HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
         let number = Object.keys(dbdata);
-        for (i = 0; i < number.length; i++) {
-            HTML_REVIEW_LOAD_OUTPUT.innerHTML += (i+1) + " " + dbdata[(i+1)]; + " " + "<br>";
+        for (i = 1; i < (number.length + 1); i++) {
+            HTML_REVIEW_LOAD_OUTPUT.innerHTML += '<div class="container"><img class="img" src="' + dbdata[i]["profilePicture"] + '">' 
+            + dbdata[i]["review"] + '</div>    ';
         }
         console.log("Displayed global reviews");
     };
@@ -182,20 +184,30 @@ async function fb_countReviews() {
 function fb_readLength(snapshot) {
     let data = snapshot.val();
     if (data == null) {
-        return;
+        reviewLength = 1;
     } else {
-        reviewLength = Object.keys(data).length + 1;
+        reviewLength = Number(Object.keys(data).length + 1);
     };
 }
 //Store review then load it
 async function fb_reviewStore() {
     const reviewText = document.getElementById("reviewText").value;
-    console.log("Data collected");
-    //Set users data with form data
-    await fb_countReviews();
-    //Push review to global review database
-    firebase.database().ref('/Mini Project/Global Reviews/' + reviewLength).set(reviewText);
-    console.log("Data set");
-    //Display reviews
-    fb_globalDisplayReview()
+    if (badWords.test(reviewText) == true) {
+        alert("Your review contains characters or words unwanted, please redo it");
+        return;
+    } else {
+        console.log("Data collected");
+        //Set users data with form data
+        await fb_countReviews();
+        //Push review to global review database
+        firebase.database().ref('/Mini Project/Global Reviews/' + reviewLength).set({
+            review: String(reviewText),
+            profilePicture: GLOBAL_user["photoURL"]
+        });
+        console.log("Data set");
+        //Display reviews
+        fb_globalDisplayReview()
+    };
 }
+
+const badWords = /["'`<>]/;

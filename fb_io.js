@@ -13,7 +13,7 @@
 // This function creates a listener to check if users are logged into google; if not creates a popup
 /**************************************************************/
 let GLOBAL_user;
-
+const HTML_LOGIN_BUTTON_OUTPUT = document.getElementById("loginButton");
 //Create listener
 function fb_login() {
   authenticationListener = firebase.auth().onAuthStateChanged(fb_handleLogin, fb_error)
@@ -23,10 +23,12 @@ function fb_handleLogin(_user) {
   if (_user) {
     console.log("User is logged in")
     GLOBAL_user = _user; //Save user details into global variable
+    HTML_LOGIN_BUTTON_OUTPUT.innerHTML = "<h2>Welcome To Sal's Saloon</h2><br>";
   } else {
     console.log("User not logged in - starting popup")
     fb_popupLogin();
     console.log("User is logged in");
+    HTML_LOGIN_BUTTON_OUTPUT.innerHTML = "<h2>Welcome To Sal's Saloon</h2><br>";
   }
 }
 //Creates a popup and gets user google

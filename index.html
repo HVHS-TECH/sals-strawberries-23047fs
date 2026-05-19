@@ -25,7 +25,9 @@
     <h1>Sal’s Strawberry Saloon</h1>
     <h2>(and other fruit products)</h2>
 
-    <button onclick="fb_login()">Login with Google</button>
+    <div id="loginButton" onload="">
+      <button onclick="fb_login()">Login with Google</button>
+    </div>
 
     <button onclick="fb_readFruit()">View favorite fruits</button>
 
@@ -41,11 +43,36 @@
       <!--Dropdown for certain fruit to easily number the amount of fav fruit-->
       <label for="favoriteFruit">Favorite Fruit:</label>
       <select name="favoriteFruit" id="favoriteFruit">
-        <option value="Strawberry">Strawberry</option>
+        <option value="Apple">Apple</option>
+        <option value="Banana">Banana</option>
+        <option value="Orange">Orange</option>
+        <option value="Grape">Grape</option>
+        <option value="Watermelon">Watermelon</option>
+        <option value="Pineapple">Pineapple</option>
         <option value="Mango">Mango</option>
-        <option value="Plum">Plum</option>
+        <option value="Strawberry">Strawberry</option>
+        <option value="Blueberry">Blueberry</option>
+        <option value="Raspberry">Raspberry</option>
+        <option value="Blackberry">Blackberry</option>
+        <option value="Cherry">Cherry</option>
         <option value="Peach">Peach</option>
+        <option value="Pear">Pear</option>
+        <option value="Plum">Plum</option>
+        <option value="Kiwi">Kiwi</option>
+        <option value="Lemon">Lemon</option>
+        <option value="Lime">Lime</option>
+        <option value="Papaya">Papaya</option>
+        <option value="Coconut">Coconut</option>
+        <option value="Pomegranate">Pomegranate</option>
+        <option value="Guava">Guava</option>
+        <option value="Lychee">Lychee</option>
         <option value="Dragonfruit">Dragonfruit</option>
+        <option value="Apricot">Apricot</option>
+        <option value="Cantaloupe">Cantaloupe</option>
+        <option value="Honeydew">Honeydew</option>
+        <option value="Passionfruit">Passionfruit</option>
+        <option value="Fig">Fig</option>
+        <option value="Avocado">Avocado</option>
       </select>
 
       <label for="fruitQuantity">How many servings per week?</label>
