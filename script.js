@@ -153,9 +153,9 @@ function fb_reviewPrompt() {
         //Reset output
         HTML_OUTPUT.innerHTML = "";
         //Create a review place
-        HTML_REVIEW_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
-        + '<input type="text" id="reviewText" name="reviewText" required />'
-        + '<button onclick="fb_reviewStore()">Submit</button>';
+        HTML_REVIEW_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>'
+            + '<input type="text" id="reviewText" name="reviewText" required />'
+            + '<button onclick="fb_reviewStore()">Submit</button>';
         //Displays all other reviews
         fb_globalDisplayReview();
     }
@@ -174,8 +174,8 @@ function fb_globalReviewSnapshot(snapshot) {
         HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
         let number = Object.keys(dbdata);
         for (i = 1; i < (number.length + 1); i++) {
-            HTML_REVIEW_LOAD_OUTPUT.innerHTML += '<div class="container"><img class="img" src="' + dbdata[i]["profilePicture"] + '">' 
-            + dbdata[i]["review"] + '</div>    ';
+            HTML_REVIEW_LOAD_OUTPUT.innerHTML += '<div class="container"><img class="img" src="' + dbdata[i]["profilePicture"] + '">'
+                + dbdata[i]["review"] + '</div>    ';
         }
         console.log("Displayed global reviews");
     };
