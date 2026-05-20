@@ -46,6 +46,8 @@ async function fb_readFruit() {
     console.log("Reading fruit");
     console.log("Remove previously displayed data");
     HTML_OUTPUT.innerHTML = "";
+    HTML_REVIEW_OUTPUT.innerHTML = "";
+    HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
     await firebase.database().ref('/Mini Project/users').once('value', fb_snapshot, fb_error);
     console.log("Finished fb_readFruit()");
 }
@@ -57,6 +59,8 @@ async function fb_readFruit() {
 /**************************************************************/
 //Gets data and activates fb_displayFruit
 async function fb_snapshot(snapshot) {
+    theFruitText = [];
+    theFruitValue = [];
     await snapshot.forEach(fb_displayFruit);
     //Display the fruit with the amount
     for (let i = 0; i < options.length; i++) {
@@ -64,6 +68,8 @@ async function fb_snapshot(snapshot) {
     }
     console.log("Finished fb_snapshot()");
 }
+//Get the options from the dropdown    
+const selectElement = document.getElementById("favoriteFruit");
 const options = selectElement.options;
 //Create the arrays to story the data
 //Fruit names
@@ -73,10 +79,6 @@ let theFruitValue = [];
 //Displays them 
 function fb_displayFruit(child) {
     //This can display any amount of fruit that is added to the dropdowm
-    //Get the options from the dropdown
-    const selectElement = document.getElementById("favoriteFruit");
-    
-
     //Get the amount of data and the fruit names
     for (let i = 0; i < options.length; i++) {
         theFruitText.push(options[i].value);
@@ -107,6 +109,8 @@ function fb_readEmailFruit() {
         console.log("Reading fruit");
         console.log("Remove previously displayed data");
         HTML_OUTPUT.innerHTML = "";
+        HTML_REVIEW_OUTPUT.innerHTML = "";
+        HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
         firebase.database().ref('/Mini Project/users').once('value', fb_emailSnapshot, fb_error);
         console.log("Finished fb_readEmailFruit()");
     }
@@ -165,7 +169,6 @@ function fb_globalDisplayReview() {
 function fb_globalReviewSnapshot(snapshot) {
     let dbdata = snapshot.val();
     if (dbdata == null) {
-<<<<<<< HEAD
         HTML_REVIEW_LOAD_OUTPUT.innerHTML = "There are currently no reviews, be the first";
     } else {
         HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
@@ -173,19 +176,6 @@ function fb_globalReviewSnapshot(snapshot) {
         for (i = 1; i < (number.length + 1); i++) {
             HTML_REVIEW_LOAD_OUTPUT.innerHTML += '<div class="container"><img class="img" src="' + dbdata[i]["profilePicture"] + '">' 
             + dbdata[i]["review"] + '</div>    ';
-=======
-        alert("Error with system");
-    } else {
-        //Reset HTML output
-        HTML_REVIEW_LOAD_OUTPUT.innerHTML = '<label for="reviewText">Leave a review</label>' 
-        + '<input type="text" id="reviewText" name="reviewText" required />'
-        + '<br><button onclick="fb_reviewStore()">Submit</button>';
-        //Read how many reviews there are
-        let number = Object.keys(dbdata);
-        //For each review display it
-        for (i = 0; i < number.length; i++) {
-            HTML_REVIEW_LOAD_OUTPUT.innerHTML += (i+1) + " " + String(dbdata[(i+1)]); + " " + "<br>";
->>>>>>> 1c639106dfd27f7ba285abe7d4f27c72ff06060e
         }
         console.log("Displayed global reviews");
     };
