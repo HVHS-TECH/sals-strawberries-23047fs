@@ -25,8 +25,7 @@ function fb_write() {
             {
                 name: name,
                 favoriteFruit: favoriteFruit,
-                fruitQuantity: fruitQuantity,
-                review: ""
+                fruitQuantity: fruitQuantity
             }
         );
         console.log("Data set");
