@@ -17,7 +17,11 @@ function fb_write() {
         const favoriteFruit = document.getElementById("favoriteFruit").value;
         const fruitQuantity = document.getElementById("fruitQuantity").value;
         console.log("Data collected");
-
+        //Checks if data is bad
+        if (badWords.test(name || favoriteFruit || fruitQuantity) == true) {
+            alert("Your review contains characters or words unwanted, please redo it");
+            return;
+        }
         //Set users data with form data
         //Get user
         let uid = GLOBAL_user["uid"];
