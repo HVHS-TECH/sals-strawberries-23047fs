@@ -23,9 +23,9 @@ function fb_write() {
         let uid = GLOBAL_user["uid"];
         firebase.database().ref('/Mini Project/users/' + uid).set(
             {
-                name: name,
-                favoriteFruit: favoriteFruit,
-                fruitQuantity: fruitQuantity
+                name: String(name),
+                favoriteFruit: String(favoriteFruit),
+                fruitQuantity: Number(fruitQuantity)
             }
         );
         console.log("Data set");
