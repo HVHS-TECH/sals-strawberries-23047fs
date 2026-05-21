@@ -14,8 +14,8 @@
 /**************************************************************/
 let GLOBAL_user;
 //Create listener
-function fb_login() {
-  authenticationListener = firebase.auth().onAuthStateChanged(fb_handleLogin, fb_error)
+async function fb_login() {
+  authenticationListener = await firebase.auth().onAuthStateChanged(fb_handleLogin, fb_error)
 }
 //Checks if user is logged in, if not use fb_popupLogin
 function fb_handleLogin(_user) {

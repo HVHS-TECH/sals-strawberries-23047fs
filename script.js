@@ -67,7 +67,8 @@ async function fb_snapshot(snapshot) {
     }
     console.log("Finished fb_snapshot()");
 }
-//Get the options from the dropdown    
+
+//Constants for the options from the dropdown    
 const selectElement = document.getElementById("favoriteFruit");
 const options = selectElement.options;
 //Create the arrays to story the data
@@ -75,6 +76,7 @@ const options = selectElement.options;
 let theFruitText = [];
 //Amount of times it is said in the database
 let theFruitValue = [];
+
 //Displays them 
 function fb_displayFruit(child) {
     //This can display any amount of fruit that is added to the dropdowm
@@ -110,28 +112,27 @@ function fb_readEmailFruit() {
         HTML_OUTPUT.innerHTML = "";
         HTML_REVIEW_OUTPUT.innerHTML = "";
         HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
-        firebase.database().ref('/Mini Project/users').once('value', fb_emailSnapshot, fb_error);
+        //User uid
+        let uid = GLOBAL_user["uid"];
+        firebase.database().ref('/Mini Project/users/' + uid).once('value', fb_emailSnapshot, fb_error);
         console.log("Finished fb_readEmailFruit()");
     }
 }
 /**************************************************************/
 // fb_emailSnapshot() and fb_email()
 // Handles diplaying an email with values from database from snapshot in to html
-// This function uses the data from fb_readEmailFruit and puts it into html using fb_email()
+// This function uses the data from fb_readEmailFruit and puts it in html
 /**************************************************************/
 //Gets data and activates fb_email
 async function fb_emailSnapshot(snapshot) {
-    await snapshot.forEach(fb_email);
-    console.log("Finished fb_emailSnapshot()");
-}
-//Uses the data and creates an email
-function fb_email(child) {
-    let userName = child.val()["name"];
-    let favoriteFruit = child.val()["favoriteFruit"];
-    let fruitQuantity = child.val()["fruitQuantity"]
+    let dbdata = await snapshot.val();
+    let userName = dbdata["name"];
+    let favoriteFruit = dbdata["favoriteFruit"];
+    let fruitQuantity = dbdata["fruitQuantity"]
     HTML_OUTPUT.innerHTML = '<div id="emailMessage"> <p>From: Sals Strawberry Saloon</p> <p>Hello, ' + userName + '</p>' +
         '<p>This is Sals Strawberry Saloon, reaching out about your cars extended insurance policy.</p><p>Also, we are offering a deal on your favorite fruit: '
         + favoriteFruit + '</p><p>You can get ' + fruitQuantity + ' servings per week for 27.3% more!</p><p>Best regards, Sals Strawberry Saloon</p></div>'
+    console.log("Finished fb_emailSnapshot()");
 }
 
 /**************************************************************/
@@ -184,8 +185,8 @@ let reviewLength;
 async function fb_countReviews() {
     await firebase.database().ref('/Mini Project/Global Reviews/').once('value', fb_readLength, fb_error);
 }
-function fb_readLength(snapshot) {
-    let data = snapshot.val();
+async function fb_readLength(snapshot) {
+    let data = await snapshot.val();
     if (data == null) {
         reviewLength = 1;
     } else {
