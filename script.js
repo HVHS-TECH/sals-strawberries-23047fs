@@ -126,8 +126,12 @@ function fb_readEmailFruit() {
 // This function uses the data from fb_readEmailFruit and puts it in html
 /**************************************************************/
 //Gets data and activates fb_email
-async function fb_emailSnapshot(snapshot) {
-    let dbdata = await snapshot.val();
+function fb_emailSnapshot(snapshot) {
+    let dbdata = snapshot.val();
+    if (!dbdata["name"] || !dbdata["favoriteFruit"] || !dbdata["fruitQuantity"]) {
+        alert("There has been an error with you data please resubmit it")
+        return;
+    }
     let userName = dbdata["name"];
     let favoriteFruit = dbdata["favoriteFruit"];
     let fruitQuantity = dbdata["fruitQuantity"]
