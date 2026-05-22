@@ -13,9 +13,9 @@ function fb_write() {
         console.log("User has failed to login first");
     } else {
         // Get the form data
-        const name = document.getElementById("name").value;
-        const favoriteFruit = document.getElementById("favoriteFruit").value;
-        const fruitQuantity = document.getElementById("fruitQuantity").value;
+        let name = document.getElementById("name").value;
+        let favoriteFruit = document.getElementById("favoriteFruit").value;
+        let fruitQuantity = document.getElementById("fruitQuantity").value;
         console.log("Data collected");
         //Checks if data is bad
         if (badWords.test(name || favoriteFruit || fruitQuantity) == true) {
@@ -33,6 +33,9 @@ function fb_write() {
             }
         );
         console.log("Data set");
+        document.getElementById("name").value ="";
+        document.getElementById("favoriteFruit").value ="";
+        document.getElementById("fruitQuantity").value ="";
     };
     console.log("Finished fb_write()");
 }
