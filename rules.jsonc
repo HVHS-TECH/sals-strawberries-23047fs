@@ -14,7 +14,6 @@
         "Mini Project": {
             "users": {
                 "$uid": {
-                    ".read": "auth != null",
                     ".write": "(auth != null && auth.uid === $uid) || auth.uid === 'pCmr0SLtPmOKwM0NYKmmow3QrtC2' || root.child('users').child(auth.uid).child('role').val() === 'admin'"
                     //Allows school account and any account with admin role added
                 }
