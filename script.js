@@ -52,6 +52,7 @@ async function fb_readFruit() {
     HTML_REVIEW_OUTPUT.innerHTML = "";
     HTML_REVIEW_LOAD_OUTPUT.innerHTML = "";
     await firebase.database().ref('/Mini Project/users').once('value', fb_snapshot, fb_error);
+    console.log("HTML favorite fruit set");
     console.log("Finished fb_readFruit()");
 }
 
@@ -69,7 +70,6 @@ async function fb_snapshot(snapshot) {
     for (let i = 0; i < options.length; i++) {
         HTML_OUTPUT.innerHTML += theFruitText[i] + ": " + theFruitValue[i] + "<br>";
     }
-    console.log("Finished fb_snapshot()");
 }
 
 //Constants for the options from the dropdown    
@@ -96,8 +96,6 @@ function fb_displayFruit(child) {
             theFruitValue[i] = theFruitValue[i] + 1;
         }
     }
-    console.log("HTML favorite fruit set");
-    console.log("Finished fb_displayFruit()");
 }
 
 /**************************************************************/
