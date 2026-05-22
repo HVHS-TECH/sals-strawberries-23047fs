@@ -1,3 +1,5 @@
+
+/*
 {
     //Testing rules
     "rules": {
@@ -5,7 +7,7 @@
         ".write": true
     }
 }
-/*
+*/
 {
     //Real rules
     "rules": {
@@ -18,4 +20,3 @@
         }
     }
 }
-*/
